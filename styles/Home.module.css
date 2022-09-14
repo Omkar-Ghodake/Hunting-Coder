@@ -14,18 +14,13 @@
 
 .footer {
   display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
+  padding: 1rem 0.5rem;
+  border-top: 1px solid grey;
 }
 
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
+.footer ul {
+  list-style: none;
 }
 
 .title a {
