@@ -12,6 +12,14 @@
   align-items: center;
 }
 
+#homeImg {
+  border-radius: 12px;
+}
+
+.imageWrap {
+  padding: 20px;
+}
+
 .footer {
   display: flex;
   justify-content: space-around;
@@ -46,8 +54,6 @@
 }
 
 .description {
-  margin: 4rem 0;
-  line-height: 1.5;
   font-size: 1.5rem;
 }
 
