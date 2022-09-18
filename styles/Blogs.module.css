@@ -1,5 +1,7 @@
 .main {
 	min-height: 100vh;
+	max-width: 40vw;
+	margin: auto;
 	padding: 2rem 0;
 	flex: 1;
 	display: flex;
@@ -9,4 +11,9 @@
 
 .blogItem h3 {
 	cursor: pointer;
+	text-align: center;
+}
+
+.link:hover {
+	color: #0d6efd !important;
 }
