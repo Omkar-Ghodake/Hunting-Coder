@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/Blogs.module.css'
+const fs = require('fs')
 
 const Blogs = (props) => {
 	// const getBlogs = async () => {
@@ -25,13 +26,13 @@ const Blogs = (props) => {
 	return (
 		<div className={ styles.container }>
 			<main className={ styles.main }>
-				{ blogs && blogs.map((element, index) => {
+				{ blogs.map((element, index) => {
 					return <div key={ index }>
 						<div className={ styles.blogItem }>
 							<Link href={ `/blogpost/${element.slug}` }>
 								<h3 className={ styles.link } >{ element.title }</h3>
 							</Link>
-							<p>{ element.content.substr(0, 140) }...</p>
+							<p>{ element.metadesc.substr(0, 140) }...</p>
 						</div>
 					</div>
 				}) }
@@ -61,10 +62,14 @@ const Blogs = (props) => {
 	)
 }
 
-export async function getServerSideProps(context) {
-	let data = await fetch('http://localhost:3000/api/blogs')
-	let allBlogs = await data.json()
-
+export async function getStaticProps(context) {
+	let allBlogs = []
+	fs.readdir('blogData', (err, data) => {
+		data.forEach((blogName) => {
+			var blogData = fs.readFileSync(`blogData/${blogName}`, 'utf-8')
+			allBlogs.push(JSON.parse(blogData))
+		})
+	})
 	return {
 		props: { allBlogs }, // will be passed to the page component as props
 	}

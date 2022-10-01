@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import styles from '../../styles/Blogpost.module.css'
+const fs = require('fs')
 
-
-const slug = (props) => {
+const Slug = (props) => {
 	const [blogData, setBlogData] = useState(props.myBlog)
+
+	const createMarkup = (content) => {
+		return { __html: content }
+	}
 
 	// useEffect(() => {
 	// 	if (!router.isReady) return
@@ -19,26 +23,35 @@ const slug = (props) => {
 
 	return (
 		<>
-			<div className={ styles.container }>
+			{ blogData && <div className={ styles.container }>
 				<main className={ styles.main }>
 					<h1 className={ styles.pageTitle }>{ blogData.title }</h1>
 					<hr />
-					<p>{ blogData.content }</p>
+					<div dangerouslySetInnerHTML={ createMarkup(blogData.content) }></div>
 				</main>
-			</div>
+			</div> }
 		</>
 	)
 }
 
-export async function getServerSideProps(context) {
-	const { slug } = context.query
-	let data = await fetch(`http://127.0.0.1:3000/api/getblog?slug=${slug}`)
-	let myBlog = await data.json()
-	// setBlogData(myBlog)
-
+export async function getStaticPaths() {
 	return {
-		props: { myBlog }
+		paths: [
+			{ params: { slug: 'how-to-learn-flask' } },
+			{ params: { slug: 'how-to-learn-javascript' } },
+			{ params: { slug: 'how-to-learn-nextjs' } },
+		],
+		fallback: true // false or blocking
 	}
 }
 
-export default slug
+export async function getStaticProps(context) {
+	const { slug } = context.params
+	const myBlog = fs.readFileSync(`blogData/${slug}.json`, 'utf8')
+
+	return {
+		props: { myBlog: JSON.parse(myBlog) }
+	}
+}
+
+export default Slug
